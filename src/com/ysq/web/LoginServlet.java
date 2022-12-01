@@ -21,13 +21,13 @@ public class LoginServlet extends HttpServlet{
         Map<String,String[]> r = require.getParameterMap();
         System.out.println(r);
         String userName = require.getParameter("userName");
-        String passWord = require.getParameter("passWord");
+        String password = require.getParameter("password");
 
-        User user = LoginPart.login(userName,passWord);
+        User user = LoginPart.login(userName,password);
         System.out.println("ok");
 
         response.setContentType("text/json");
         PrintWriter out = response.getWriter();
-        out.write(user.parseToJSON());
+        if(user!=null) out.write(user.parseToJSON());
     }
 }

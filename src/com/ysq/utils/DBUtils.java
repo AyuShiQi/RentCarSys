@@ -19,17 +19,17 @@ public class DBUtils {
             throw new RuntimeException(e);
         }
         //连接信息
-//        String driver = (String)config.get("driver");
+        String driver = (String)config.get("driver");
         url = (String)config.get("url");
         root = (String)config.get("root");
         password = (String)config.get("password");
 
-//        //连接ing
-//        try {
-//            Class.forName(driver);
-//        } catch (ClassNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
+        //连接ing
+        try {
+            Class.forName(driver);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static Connection getConnection() {
