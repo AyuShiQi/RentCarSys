@@ -40,6 +40,8 @@ public class UserDAO {
             return new User(userName,password,permission);
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            DBUtils.close(connection,p,rs);
         }
     }
 }

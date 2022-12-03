@@ -36,9 +36,9 @@ public class User {
 
     public String parseToJSON() {
         return "{" +
-            "userName:" + userName + "," +
-            "permission:" + permission +
-        "}";
+            "\"userName\": \"" + userName + "\"," +
+            "\"permission\": \"" + permission +
+        "\"}";
     }
 
     public boolean checkPassWord(String password) {

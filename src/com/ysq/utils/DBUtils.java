@@ -3,12 +3,17 @@ package com.ysq.utils;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
 
 public class DBUtils {
     private static String url;
     private static String root;
     private static String password;
+
+    private DBUtils() {
+    }
 
     static {
         //获取配置信息
@@ -55,5 +60,13 @@ public class DBUtils {
             }
         } catch (SQLException e) {
         }
+    }
+
+    public static String[] parseToString(ResultSet rs,String colum) throws SQLException {
+        List<String> list = new LinkedList<>();
+        while (rs.next()) {
+            list.add(rs.getString(colum));
+        }
+        return list.toArray(new String[list.size()]);
     }
 }
