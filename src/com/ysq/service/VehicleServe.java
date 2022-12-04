@@ -32,6 +32,12 @@ public class VehicleServe {
         return Vehicle.parseListJSON(vehicles);
     }
 
+    public static String getCarWithModel(String type, String brand,String model) {
+        Vehicle[] vehicles = VehicleDAO.queryVehicleWithModel(type,brand,model);
+        System.out.println(Vehicle.parseListJSON(vehicles));
+        return Vehicle.parseListJSON(vehicles);
+    }
+
     /**
      * 通过类型获取品牌
      * @param type 类型
@@ -48,7 +54,13 @@ public class VehicleServe {
      * @param type
      * @return
      */
-    public static String getModels(String type) {
-        return null;
+    public static String getModels(String type,String brand) {
+        String[] str = VehicleDAO.queryModels(type,brand);
+        System.out.println(StringUtils.parseArrayJSON(str));
+        return "\"models\":" + StringUtils.parseArrayJSON(str);
+    }
+
+    public static boolean deleteVehicle(String vehicleId) {
+        return VehicleDAO.deleteVehicleWithId(vehicleId);
     }
 }

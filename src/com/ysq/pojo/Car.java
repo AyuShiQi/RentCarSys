@@ -55,6 +55,11 @@ public class Car extends Vehicle {
     }
 
     @Override
+    public String getModel(String model) {
+        return "\'"+model+"\'";
+    }
+
+    @Override
     public void updateModel() {
 
     }

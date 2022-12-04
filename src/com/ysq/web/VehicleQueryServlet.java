@@ -49,6 +49,15 @@ public class VehicleQueryServlet extends HttpServlet {
                 // model为空
                 if(model==null) {
                     String infos = VehicleServe.getCarWithBrand(type,brand);
+                    String models = VehicleServe.getModels(type,brand);
+
+                    response.setStatus(200);
+                    out.write(StringUtils.ObjectToJOSN(infos,models));
+                }
+                else {
+                    String infos = VehicleServe.getCarWithModel(type,brand,model);
+
+                    response.setStatus(200);
                     out.write(StringUtils.ObjectToJOSN(infos));
                 }
             }

@@ -107,6 +107,29 @@ public class VehicleDAO {
         }
     }
 
+    public static Vehicle[] queryVehicleWithModel(String type,String brand,String model) {
+        Connection connection = DBUtils.getConnection();
+        PreparedStatement p = null;
+        ResultSet rs = null;
+        String sql = "select vehicleId,brand,perRent,type_name,model" +
+                " from vehicle,vehicle_type,"+Vehicle.getTypeName(type)+
+                " where type = type_id and brand = ? and model= ? and vehicleId=vehicle_id;";
+
+        try {
+            p = connection.prepareStatement(sql);
+
+            p.setString(1,brand);
+            p.setString(2,model);
+
+            rs = p.executeQuery();
+            return Vehicle.createVehicles(rs);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DBUtils.close(connection,p,rs);
+        }
+    }
+
     /**
      *
      * @param type
@@ -130,5 +153,62 @@ public class VehicleDAO {
             System.out.println(e);
             throw new RuntimeException(e);
         }
+    }
+
+    public static String[] queryModels(String type,String brand) {
+        String sql = "select distinct model from vehicle,"+Vehicle.getTypeName(type)+
+                " where brand = ? and vehicleId = vehicle_id;";
+
+        Connection connection = DBUtils.getConnection();
+        PreparedStatement p = null;
+        ResultSet rs = null;
+
+        try {
+            p = connection.prepareStatement(sql);
+            p.setString(1,brand);
+
+            rs = p.executeQuery();
+            return DBUtils.parseToString(rs,"model");
+        } catch (SQLException e) {
+            System.out.println(e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static boolean deleteVehicleWithId(String vehicleId) {
+        Boolean res = false;
+        // 先查询车辆类型
+        String type = null;
+        String sql = "select type_name from vehicle,vehicle_type where type=type_id and vehicleId = ?";
+
+        Connection connection = DBUtils.getConnection();
+        PreparedStatement p = null;
+        ResultSet rs = null;
+
+        try {
+            p = connection.prepareStatement(sql);
+            p.setString(1,vehicleId);
+
+            rs = p.executeQuery();
+            type = (DBUtils.parseToString(rs,"type_name"))[0];
+
+            // 再删除
+            // 总表
+            sql = "delete from vehicle where vehicleId = ?";
+            p = connection.prepareStatement(sql);
+            p.setString(1,vehicleId);
+            if(p.execute()) {
+                sql = "delete from "+Vehicle.getTypeName(type)+" where vehicleId = ?";
+                p.setString(1,vehicleId);
+                return p.execute();
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+            throw new RuntimeException(e);
+        } finally {
+            DBUtils.close(connection,p,rs);
+        }
+
+        return false;
     }
 }

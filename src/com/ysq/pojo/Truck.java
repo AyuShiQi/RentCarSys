@@ -44,7 +44,12 @@ public class Truck extends Vehicle {
 
     @Override
     public String getModel() {
-        return getWeightWithUnit();
+        return "载重"+getWeightWithUnit();
+    }
+
+    @Override
+    public String getModel(String model) {
+        return model.substring(0,model.length()-1);
     }
 
     @Override

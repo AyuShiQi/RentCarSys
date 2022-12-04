@@ -55,6 +55,11 @@ public class Bus extends Vehicle {
     }
 
     @Override
+    public String getModel(String model) {
+        return model.substring(0,model.length()-1);
+    }
+
+    @Override
     public void updateModel() {
 
     }

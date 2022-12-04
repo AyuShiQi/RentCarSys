@@ -1,9 +1,8 @@
 package com.ysq.pojo;
 
-import com.ysq.dao.VehicleDAO;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,15 +32,27 @@ public abstract class Vehicle {
         if(type.equals("轿车")) return "car";
         if(type.equals("货车")) return "truck";
         if(type.equals("客车")) return "bus";
-        return "";
+        return null;
     }
+
+    /**
+     * 通过类型返回对应实例
+     * @param type 类型
+     * @return 对应实例
+     */
+    public static Vehicle getInstance(String type){
+        if(type.equals("轿车")) return new Car();
+        if(type.equals("货车")) return new Truck();
+        if(type.equals("客车")) return new Bus();
+        return null;
+    }
+
     /**
      * 通过数据创建汽车数组
      * @param rs 结果集
      * @return 汽车数组
      * @throws SQLException 数据集的异常
      */
-
     /**
      * 将汽车数组转化成JSON字符串
      * @return
@@ -80,8 +91,8 @@ public abstract class Vehicle {
                 list.add(new Bus(vehicleId,brand,perRent,seats));
             }
             else {
-                int weigth = rs.getInt("model");
-                list.add(new Truck(vehicleId,brand,perRent,weigth));
+                int weight = rs.getInt("model");
+                list.add(new Truck(vehicleId,brand,perRent,weight));
             }
         }
         return list.toArray(new Vehicle[list.size()]);
@@ -210,6 +221,13 @@ public abstract class Vehicle {
     public abstract String getModel();
 
     /**
+     * 把型号转化回去
+     * @param model 字符串形式
+     * @return 最后结果
+     */
+    public abstract String getModel(String model);
+
+    /**
      * 汽车对象的String表示
      *
      * @return 表示字符串
@@ -224,8 +242,8 @@ public abstract class Vehicle {
                 "\"vehicleId\": \""+vehicleId + "\"," +
                 "\"type\": \"" + getName() + "\"," +
                 "\"brand\": \"" + brand + "\"," +
-                "\"perRent\": " + perRent + "," +
-                "\"model\": \"" + getModel() + "\"" +
+                "\"model\": \"" + getModel() + "\"," +
+                "\"perRent\": " + perRent +
                 "}";
     }
 
