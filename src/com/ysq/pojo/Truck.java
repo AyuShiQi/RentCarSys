@@ -7,13 +7,13 @@ public class Truck extends Vehicle {
     /**
      * 卡车载重，单位为吨
      */
-    int weight;
+    String weight;
     /**
      * 创建Car对象
      */
     public Truck() {
         super("未知", "未知", 0);
-        weight = 0;
+        weight = "0";
     }
     /**
      * 创建Car对象
@@ -22,7 +22,7 @@ public class Truck extends Vehicle {
      * @param perRent 日租金
      * @param weight 卡车载重
      */
-    public Truck(String vehicleId, String brand, int perRent,int weight) {
+    public Truck(String vehicleId, String brand, int perRent,String weight) {
         super(vehicleId, brand, perRent);
         this.weight = weight;
     }
@@ -35,16 +35,12 @@ public class Truck extends Vehicle {
         else if(days < 365) rent = days * getPerRent() * 0.7F;
         else rent = days * getPerRent() * 0.6F;
 
-        // 载重大于多少，加点保养费
-        if(weight>200) rent+=2000;
-        else if(weight>100) rent+=100;
-
         return rent;
     }
 
     @Override
     public String getModel() {
-        return "载重"+getWeightWithUnit();
+        return getWeightWithUnit();
     }
 
     @Override
@@ -70,7 +66,7 @@ public class Truck extends Vehicle {
      * 获取载重
      * @return 载重
      */
-    public int getWeight() {
+    public String getWeight() {
         return weight;
     }
 
@@ -78,8 +74,7 @@ public class Truck extends Vehicle {
      * 设置新载重
      * @param weight 新载重
      */
-    public boolean setWeight(int weight) {
-        if(weight<=0) return false;
+    public boolean setWeight(String weight) {
         this.weight = weight;
         return true;
     }
@@ -89,7 +84,7 @@ public class Truck extends Vehicle {
      * @return 带单位载重
      */
     public String getWeightWithUnit() {
-        return weight + "吨";
+        return weight;
     }
 }
 

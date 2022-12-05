@@ -176,17 +176,17 @@ public class VehicleDAO {
     }
 
     public static boolean deleteVehicleWithId(String vehicleId) {
-        Boolean res = false;
         // 先查询车辆类型
         String type = null;
-        String sql = "select type_name from vehicle,vehicle_type where type=type_id and vehicleId = ?";
+        String sql1 = "select type_name from vehicle,vehicle_type where type=type_id and vehicleId = ?";
+        String sql2 = "delete from vehicle where vehicleId = ?";
 
         Connection connection = DBUtils.getConnection();
         PreparedStatement p = null;
         ResultSet rs = null;
 
         try {
-            p = connection.prepareStatement(sql);
+            p = connection.prepareStatement(sql1);
             p.setString(1,vehicleId);
 
             rs = p.executeQuery();
@@ -194,21 +194,96 @@ public class VehicleDAO {
 
             // 再删除
             // 总表
-            sql = "delete from vehicle where vehicleId = ?";
-            p = connection.prepareStatement(sql);
+            p = connection.prepareStatement(sql2);
             p.setString(1,vehicleId);
-            if(p.execute()) {
-                sql = "delete from "+Vehicle.getTypeName(type)+" where vehicleId = ?";
-                p.setString(1,vehicleId);
-                return p.execute();
-            }
+            p.execute();
+
+            String sql3 = "delete from "+Vehicle.getTypeName(type)+" where vehicle_id = ?";
+            p = connection.prepareStatement(sql3);
+            p.setString(1,vehicleId);
+            return p.execute();
         } catch (SQLException e) {
             System.out.println(e);
             throw new RuntimeException(e);
         } finally {
             DBUtils.close(connection,p,rs);
         }
+    }
 
-        return false;
+    /**
+     * 更新汽车信息
+     * @param vehicleId 车牌号
+     * @param brand 更新品牌
+     * @param model 更新型号
+     * @param perRent 日租金
+     * @return 是否成功
+     */
+    public static boolean updateVehicle(String vehicleId, String type,String brand, String model, int perRent) {
+        String sql1 = "update vehicle set perRent = ?,brand = ? where vehicleId = ?";
+        String sql2 = "update "+Vehicle.getTypeName(type)+" set model = ? where vehicle_id = ?";
+
+        Connection connection = DBUtils.getConnection();
+        PreparedStatement p = null;
+
+        try {
+            p = connection.prepareStatement(sql1);
+            p.setInt(1,perRent);
+            p.setString(2,brand);
+            p.setString(3,vehicleId);
+
+            p.execute();
+
+            p = connection.prepareStatement(sql2);
+            p.setString(1,model);
+            p.setString(2,vehicleId);
+
+            p.execute();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e);
+            throw new RuntimeException(e);
+        } finally {
+            DBUtils.close(connection,p,null);
+        }
+    }
+
+    public static boolean addVehicle(String vehicleId, String type,String brand, String model, int perRent) {
+
+
+        String sql1 = "select vehicleId from vehicle where vehicleId = ?";
+        String sql2 = "insert into vehicle(brand, vehicleId, perRent, type) values (?,?,?,?)";
+        String sql3 = "insert into "+Vehicle.getTypeName(type)+"(vehicle_id, model) values(?,?)";
+
+        Connection connection = DBUtils.getConnection();
+        PreparedStatement p = null;
+        ResultSet rs = null;
+
+        try {
+            //先判断是否有这个车牌号
+            p = connection.prepareStatement(sql1);
+            p.setString(1,vehicleId);
+
+            rs = p.executeQuery();
+            // 如果存在车牌号,则不添加
+            if(rs.next()) return false;
+
+            p = connection.prepareStatement(sql2);
+            p.setString(1,brand);
+            p.setString(2,vehicleId);
+            p.setInt(3,perRent);
+            p.setInt(4,Vehicle.getTypeId(type));
+            p.execute();
+
+            p = connection.prepareStatement(sql3);
+            p.setString(1,vehicleId);
+            p.setString(2,model);
+            p.execute();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e);
+            throw new RuntimeException(e);
+        } finally {
+            DBUtils.close(connection,p,rs);
+        }
     }
 }

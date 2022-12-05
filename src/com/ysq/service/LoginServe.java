@@ -1,9 +1,8 @@
 package com.ysq.service;
 
-import com.ysq.dao.UserDAO;
 import com.ysq.pojo.User;
 
-public class LoginPart {
+public class LoginServe {
     public static User login(String userName,String password) {
         User user = checkUser(userName);
         // 检查密码是否一致

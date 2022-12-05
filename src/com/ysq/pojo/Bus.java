@@ -9,14 +9,14 @@ public class Bus extends Vehicle {
     /**
      * 座位数
      */
-    private int seats;
+    private String seats;
 
     /**
      * 创建Bus对象
      */
     public Bus() {
         super("未知", "未知", 0);
-        seats = 0;
+        seats = "0";
     }
 
     /**
@@ -27,7 +27,7 @@ public class Bus extends Vehicle {
      * @param perRent   日租金
      * @param seats     座位数
      */
-    public Bus(String vehicleId, String brand, int perRent, int seats) {
+    public Bus(String vehicleId, String brand, int perRent, String seats) {
         super(vehicleId, brand, perRent);
         this.seats = seats;
     }
@@ -74,7 +74,7 @@ public class Bus extends Vehicle {
      *
      * @return 座位数
      */
-    public int getSeats() {
+    public String getSeats() {
         return seats;
     }
 
@@ -84,7 +84,7 @@ public class Bus extends Vehicle {
      * @return 座位数
      */
     public String getSeatsWithUnit() {
-        return seats + "座";
+        return seats;
     }
 
     /**
@@ -92,8 +92,7 @@ public class Bus extends Vehicle {
      *
      * @param seats 新座位数
      */
-    public boolean setSeats(int seats) {
-        if (seats <= 0) return false;
+    public boolean setSeats(String seats) {
         this.seats = seats;
         return true;
     }

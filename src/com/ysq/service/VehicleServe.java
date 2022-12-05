@@ -63,4 +63,33 @@ public class VehicleServe {
     public static boolean deleteVehicle(String vehicleId) {
         return VehicleDAO.deleteVehicleWithId(vehicleId);
     }
+
+    public static boolean updateVehicle(String vehicleId, String type,String brand, String model, String perRent) {
+        if(brand.equals("")) brand = "无品牌";
+        if(model.equals("")) model = "无型号";
+        if(perRent.equals("NaN")) perRent = "0";
+
+        int rent = Integer.parseInt(perRent);
+
+        return VehicleDAO.updateVehicle(vehicleId,type,brand,model,rent);
+    }
+
+    public static boolean addVehicle(String vehicleId, String type,String brand, String model, String perRent) {
+        // 车牌为无禁止添加
+        if(vehicleId.equals("")||vehicleId.length()>8) return false;
+        if(!Vehicle.isLegal(type)) return false;
+        if(brand.equals("")) brand = "无品牌";
+        if(model.equals("")) model = "无型号";
+        if(perRent.equals("NaN")) perRent = "0";
+        int rent = Integer.parseInt(perRent);
+
+        return VehicleDAO.addVehicle(vehicleId,type,brand,model,rent);
+    }
+
+    public static float rentVehicle(String vehicleId, String days) {
+        int day = Integer.parseInt(days);
+        Vehicle vehicle = VehicleDAO.queryVehicleWithVehicleId(vehicleId)[0];
+
+        return vehicle.calRent(day);
+    }
 }

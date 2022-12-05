@@ -36,15 +36,27 @@ public abstract class Vehicle {
     }
 
     /**
-     * 通过类型返回对应实例
+     * 判断是否合法
      * @param type 类型
-     * @return 对应实例
+     * @return 是否合法
      */
-    public static Vehicle getInstance(String type){
-        if(type.equals("轿车")) return new Car();
-        if(type.equals("货车")) return new Truck();
-        if(type.equals("客车")) return new Bus();
-        return null;
+    public static boolean isLegal(String type){
+        if(type.equals("轿车")) return true;
+        if(type.equals("货车")) return true;
+        if(type.equals("客车")) return true;
+        return false;
+    }
+
+    /**
+     * 通过类型返回对应id
+     * @param type 类型
+     * @return 对应id
+     */
+    public static int getTypeId(String type){
+        if(type.equals("轿车")) return 1;
+        if(type.equals("货车")) return 2;
+        if(type.equals("客车")) return 3;
+        return 0;
     }
 
     /**
@@ -87,11 +99,11 @@ public abstract class Vehicle {
                 list.add(new Car(vehicleId,brand,model,perRent));
             }
             else if(type.equals("客车")) {
-                int seats = rs.getInt("model");
+                String seats = rs.getString("model");
                 list.add(new Bus(vehicleId,brand,perRent,seats));
             }
             else {
-                int weight = rs.getInt("model");
+                String weight = rs.getString("model");
                 list.add(new Truck(vehicleId,brand,perRent,weight));
             }
         }
