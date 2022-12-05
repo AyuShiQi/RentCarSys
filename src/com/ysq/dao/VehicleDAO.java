@@ -248,8 +248,6 @@ public class VehicleDAO {
     }
 
     public static boolean addVehicle(String vehicleId, String type,String brand, String model, int perRent) {
-
-
         String sql1 = "select vehicleId from vehicle where vehicleId = ?";
         String sql2 = "insert into vehicle(brand, vehicleId, perRent, type) values (?,?,?,?)";
         String sql3 = "insert into "+Vehicle.getTypeName(type)+"(vehicle_id, model) values(?,?)";

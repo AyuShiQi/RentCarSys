@@ -86,10 +86,14 @@ public class VehicleServe {
         return VehicleDAO.addVehicle(vehicleId,type,brand,model,rent);
     }
 
-    public static float rentVehicle(String vehicleId, String days) {
+    public static float rentVehicle(String userName, String vehicleId, String days) {
         int day = Integer.parseInt(days);
         Vehicle vehicle = VehicleDAO.queryVehicleWithVehicleId(vehicleId)[0];
+        double rents = vehicle.calRent(day);
 
+        OrderServe.addOrder(userName,vehicleId,rents);
         return vehicle.calRent(day);
     }
+
+
 }

@@ -1,6 +1,5 @@
 package com.ysq.web;
 
-import com.ysq.pojo.Vehicle;
 import com.ysq.service.VehicleServe;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,8 +9,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet("/updateCar")
-public class updateCarServlet extends HttpServlet {
+@WebServlet("/addCar")
+public class AddCarServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest require, HttpServletResponse response) throws ServletException, IOException {
         String vehicleId = require.getParameter("vehicleId");
@@ -19,8 +18,7 @@ public class updateCarServlet extends HttpServlet {
         String brand = require.getParameter("brand");
         String model = require.getParameter("model");
         String perRent = require.getParameter("perRent");
-        // 通过vehicleId去改变
-        if(VehicleServe.updateVehicle(vehicleId,type,brand,model,perRent)) {
+        if(VehicleServe.addVehicle(vehicleId,type,brand,model,perRent)) {
             response.setStatus(200);
         }
         else response.setStatus(403);

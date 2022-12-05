@@ -1,2 +1,0 @@
-"use strict";(self["webpackChunkrentcar_front"]=self["webpackChunkrentcar_front"]||[]).push([[520],{2520:function(e,t,r){r.r(t),r.d(t,{default:function(){return f}});var s=function(){var e=this,t=e._self._c;return t("div",{staticClass:"profile-view"},[t("h2",[e._v("用户名："+e._s(e.$store.state.userName))]),t("h2",[e._v("权限："+e._s(e.$store.state.permission))])])},n=[],u={name:"ProfleView"},a=u,l=r(1001),i=(0,l.Z)(a,s,n,!1,null,null,null),f=i.exports}}]);
-//# sourceMappingURL=520.303e8e18.js.map

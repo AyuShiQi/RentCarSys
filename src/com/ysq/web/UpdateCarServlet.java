@@ -9,8 +9,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet("/addCar")
-public class addCarServlet extends HttpServlet {
+@WebServlet("/updateCar")
+public class UpdateCarServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest require, HttpServletResponse response) throws ServletException, IOException {
         String vehicleId = require.getParameter("vehicleId");
@@ -18,7 +18,8 @@ public class addCarServlet extends HttpServlet {
         String brand = require.getParameter("brand");
         String model = require.getParameter("model");
         String perRent = require.getParameter("perRent");
-        if(VehicleServe.addVehicle(vehicleId,type,brand,model,perRent)) {
+        // 通过vehicleId去改变
+        if(VehicleServe.updateVehicle(vehicleId,type,brand,model,perRent)) {
             response.setStatus(200);
         }
         else response.setStatus(403);
